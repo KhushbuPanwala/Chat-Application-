@@ -13,7 +13,6 @@ import { UserService } from '../user/user.service';
 import { Messagedetail } from '../messagedetail/messagedetail';
 import { UsersignalrService } from '../service/usersignalr.service';
 import { MessageSignalRService } from '../service/messgesignalr.service';
-import { EDEADLK } from 'constants';
 // import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
@@ -66,7 +65,7 @@ export class HomeComponent implements OnInit, OnDestroy {
 
       //message      
       this.msgSignalRService.startConnection();                 
-      this.msgSignalRService.addTransferNotificationListener();
+      this.msgSignalRService.addTransferNotificationListener(this.currentUserId);
       this.msgSignalRService.addBroadcastMessageDataListener();  
       this.startMsgHttpRequest(); 
       
@@ -104,15 +103,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.messagedetailService.updateMessage(id).
             pipe(first()).subscribe(msgs => {      
               this.alertService.success('Record updated successfully!!!', true); 
-              this.msgSignalRService.addTransferNotificationListener();              
-              // this.msgSignalRService.recMsgData.forEach(element => {
-              // if  (element.key==this.recivedUserId)
-              // {                 
-              //   element.unCount=0;
-              // }                
-              // });
-               
-              //  this.hide=false;
+              this.msgSignalRService.addTransferNotificationListener(this.currentUserId);              
         });  
       }
 
@@ -128,9 +119,9 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.alertService.success('Record send successfully!!!', true);          
           this.currentUserId=this.sendMessage.userId;
           this.recivedUserId= this.sendMessage.rUserId ;           
-          // this.loadData(this.sendMessage.userId, this.sendMessage.rUserId );            
-          this.msgSignalRService.addTransferMessageListener(this.currentUserId,this.recivedUserId);
-          this.msgSignalRService.addTransferNotificationListener();
+           this.loadData(this.sendMessage.userId, this.sendMessage.rUserId );
+          // this.msgSignalRService.addTransferMessageListener(this.currentUserId,this.recivedUserId);
+          // this.msgSignalRService.addTransferNotificationListener(this.currentUserId);
         });            
           this.messageForm = this.formBuilder.group({
             message: [''],

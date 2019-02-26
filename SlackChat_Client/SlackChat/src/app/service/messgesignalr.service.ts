@@ -44,21 +44,27 @@ export class MessageSignalRService {
       .then(() => console.log('Message Connection started'))
       .catch(err => console.log('Error while starting connection: ' + err));
   }
-//  -------------------notification
-  public addTransferNotificationListener = () => {    
+
+  // --- after load click
+  public addTransferNotificationListener = (cUserId) => {    
     this.data=[];
     this.recMsgData=[];
+    this.allData=[];
         this.msgDetailService.getAllMessage().subscribe(
-          msg => {           
-               this.allData=msg;
-                this.data=msg;
-                // this.data = this.allData;
+          msg => {          
+            msg.forEach(element => {
+              if  (element.rUserId==cUserId ){
+                this.allData.push(element);    
+              }
+            }); 
+            this.data = this.allData;
           }); 
       
+
     this.hubConnection.on('transfermessagedata', (data) => {
       //call from load data
         this.data =  this.allData;
-        // this.data =data;
+
       if  (this.data!=undefined && this.data.length>0 )
       { 
         const groupedKey = this.data.reduce((prev, cur)=> {
@@ -84,7 +90,6 @@ export class MessageSignalRService {
       }  
     });
   } 
-
 // -------------- date wise message
   public addTransferMessageListener = (cUserId,rUserId) => {     
     this.data=[];
