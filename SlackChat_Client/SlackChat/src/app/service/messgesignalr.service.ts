@@ -51,13 +51,13 @@ export class MessageSignalRService {
         this.msgDetailService.getAllMessage().subscribe(
           msg => {           
                this.allData=msg;
-                // this.data=msg;
-                this.data = this.allData;
+                this.data=msg;
+                // this.data = this.allData;
           }); 
       
     this.hubConnection.on('transfermessagedata', (data) => {
       //call from load data
-        // this.data =  this.allData;
+        this.data =  this.allData;
         // this.data =data;
       if  (this.data!=undefined && this.data.length>0 )
       { 

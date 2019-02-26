@@ -17,7 +17,7 @@
                 <span>&nbsp; {{user.userName}}                                      
                     <div *ngFor="let msg of msgSignalRService.recMsgData">                          
                          <div  *ngIf="user.userId == msg.key">  
-                           <mark *ngIf="msg.unCount>0 && hide">
+                           <mark *ngIf="msg.unCount>0">
                              {{msg.unCount}}
                              
                             </mark> 

@@ -104,8 +104,15 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.messagedetailService.updateMessage(id).
             pipe(first()).subscribe(msgs => {      
               this.alertService.success('Record updated successfully!!!', true); 
-              // this.msgSignalRService.addTransferNotificationListener();              
-              this.hide=false;
+              this.msgSignalRService.addTransferNotificationListener();              
+              // this.msgSignalRService.recMsgData.forEach(element => {
+              // if  (element.key==this.recivedUserId)
+              // {                 
+              //   element.unCount=0;
+              // }                
+              // });
+               
+              //  this.hide=false;
         });  
       }
 
