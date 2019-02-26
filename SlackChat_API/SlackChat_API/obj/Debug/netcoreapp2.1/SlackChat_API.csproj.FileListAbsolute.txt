@@ -12,3 +12,17 @@ C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\SlackChat_API\Sl
 C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\SlackChat_API\SlackChat_API\bin\Debug\netcoreapp2.1\SlackChat_API.pdb
 C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\SlackChat_API\SlackChat_API\obj\Debug\netcoreapp2.1\SlackChat_API.dll
 C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\SlackChat_API\SlackChat_API\obj\Debug\netcoreapp2.1\SlackChat_API.pdb
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\bin\Debug\netcoreapp2.1\SlackChat_API.deps.json
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\bin\Debug\netcoreapp2.1\SlackChat_API.runtimeconfig.json
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\bin\Debug\netcoreapp2.1\SlackChat_API.runtimeconfig.dev.json
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\bin\Debug\netcoreapp2.1\SlackChat_API.dll
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\bin\Debug\netcoreapp2.1\SlackChat_API.pdb
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\obj\Debug\netcoreapp2.1\SlackChat_API.csprojAssemblyReference.cache
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\obj\Debug\netcoreapp2.1\SlackChat_API.csproj.CoreCompileInputs.cache
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\obj\Debug\netcoreapp2.1\SlackChat_API.RazorAssemblyInfo.cache
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\obj\Debug\netcoreapp2.1\SlackChat_API.RazorAssemblyInfo.cs
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\obj\Debug\netcoreapp2.1\SlackChat_API.AssemblyInfoInputs.cache
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\obj\Debug\netcoreapp2.1\SlackChat_API.AssemblyInfo.cs
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\obj\Debug\netcoreapp2.1\SlackChat_API.RazorTargetAssemblyInfo.cache
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\obj\Debug\netcoreapp2.1\SlackChat_API.dll
+C:\Users\khushbupanwala\Documents\Khushbu Panwala\Promact Slack\Github\SlackChat_API\SlackChat_API\obj\Debug\netcoreapp2.1\SlackChat_API.pdb

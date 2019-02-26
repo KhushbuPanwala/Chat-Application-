@@ -26,13 +26,12 @@ namespace SlackChat_API.Controllers
 
         // GET: api/Users
         [HttpGet]
-        public IActionResult GetUsers()
+        public ActionResult<IEnumerable<User>> GetUsers()
         {
-            //ActionResult<IEnumerable<User>>            
             var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transferuserdata",
-                _context.Users));
-            //return _context.Users;
-            return Ok(new { Message = "Request Completed" });
+            _context.Users));
+            return _context.Users;
+            //return Ok(new { Message = "Request Completed" });
         }
 
 
@@ -46,9 +45,10 @@ namespace SlackChat_API.Controllers
             }
             //var user = await _context.Users.FindAsync(id);
 
-            List<User> users =_context.Users.ToList();
+            List<User> users = _context.Users.ToList();
             User user = users.SingleOrDefault(u => u.UserName.ToLower() == id.ToLower());
 
+            //update status of user
             user = UpdateUser(user);
 
             if (user == null)
@@ -61,8 +61,8 @@ namespace SlackChat_API.Controllers
         {
             user.UserStatus = UserStatusEnum.Active;
             _context.Entry(user).State = EntityState.Modified;
-            _context.SaveChanges();            
-            user = _context.Users.Find(user.UserId);            
+            _context.SaveChanges();
+            user = _context.Users.Find(user.UserId);
             return user;
         }
 

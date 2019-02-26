@@ -40,7 +40,7 @@ updateUser (id): Observable<any> {
   catchError(this.handleError<any>('updateUser'))
 );          
 }
-getAllUser(): Observable<any> {           
+getAllUser(): Observable<any> {   
   return this.http.get(endpoint).pipe(  
     map(this.extractData));
  }

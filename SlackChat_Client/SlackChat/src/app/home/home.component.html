@@ -4,7 +4,7 @@
             &nbsp;   
           <i [ngClass]="currentUser.userStatus? 'fa fa-circle' : 'fa fa-circle-o'"></i>           
             <a class="hlkStyle" (click)="showHome()"> &nbsp; {{currentUser.userName}}</a>        
-            &nbsp;       &nbsp;   &nbsp;     
+            &nbsp;       &nbsp;   &nbsp;
             <span (click)="logout(currentUser.userId)"  >
                 <i class="fa fa-power-off" style="float:right; color: white; padding-right: 26px;padding-top: 2px;font-size: 22px;"></i>                
             </span>              
@@ -14,10 +14,13 @@
           <li *ngIf="user.userId!=currentUser.userId" >
             <i  [ngClass]="user.userStatus? 'fa fa-circle' : 'fa fa-circle-o'">
               <a class="hlkStyle" (click)="loadData(currentUser.userId, user.userId)">            
-                <span>&nbsp; {{user.userName}}
+                <span>&nbsp; {{user.userName}}                                      
                     <div *ngFor="let msg of msgSignalRService.recMsgData">                          
-                         <div  *ngIf="user.userId == msg.key"> 
-                            <!-- <mark *ngIf="msg.unCount>0">{{msg.unCount}}</mark>  -->
+                         <div  *ngIf="user.userId == msg.key">  
+                           <mark *ngIf="msg.unCount>0 && hide">
+                             {{msg.unCount}}
+                             
+                            </mark> 
                            </div>
                       </div>  
                 </span>
@@ -56,8 +59,7 @@
       <div *ngFor="let msg of msgSignalRService.msgData">    
         <h3 *ngIf="recivedUserId!=0">
           <span>
-                  {{msg.key |  date: 'EEEE, MMMM d, y'}}
-                  <mark>{{msgSignalRService.msgData.unreadCount}}</mark>
+                  {{msg.key |  date: 'EEEE, MMMM d, y'}}                  
           </span>
         </h3>               
         <div  *ngFor="let msgDetail of msg.value">          

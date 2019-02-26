@@ -25,13 +25,13 @@ namespace SlackChat_API.Controllers
         }
         // GET: api/MessageDetails
         [HttpGet]
-        public IActionResult GetMessageDetails()
+        public ActionResult<IEnumerable<MessageDetail>> GetMessageDetails()
         {
             var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transfermessagedata",
                 _context.MessageDetails));
 
-            return Ok(new { Message = "Request Completed" });
-            //return _context.MessageDetails;
+            return _context.MessageDetails;
+            //return Ok(new { Message = "Request Completed" });
         }
 
         // GET: api/MessageDetails/5        
@@ -46,13 +46,13 @@ namespace SlackChat_API.Controllers
             int cUserId = Convert.ToInt32(id.Split(';')[0]);
             int rUserId = Convert.ToInt32(id.Split(';')[1]);
 
-            SlackChatContext slackChatContext = new SlackChatContext();            
+            SlackChatContext slackChatContext = new SlackChatContext();
             string connectionString = @"Server=(localdb)\ProjectsV13;Database=SlackChatDB;Trusted_Connection=True;";
             string query = "UPDATE MessageDetails SET MsgStatus=1 WHERE " +
-                        "UserId=" + rUserId + " AND RUserId=" + cUserId+ "";
+                        "UserId=" + rUserId + " AND RUserId=" + cUserId + "";
             SqlConnection connection = new SqlConnection(connectionString);
             SqlCommand command = connection.CreateCommand();
-            command.CommandText = query;    
+            command.CommandText = query;
             connection.Open();
             command.ExecuteNonQuery();
             connection.Close();

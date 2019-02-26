@@ -26,7 +26,7 @@ public data: Messagedetail[];
     return body || { };
   }
 
-sendMessage (message): Observable<any> {              
+sendMessage (message): Observable<any> {  
   return this.http.post(endpoint , JSON.stringify(message), httpOptions)
   .pipe(
   catchError(this.handleError<any>('sendMessage')));

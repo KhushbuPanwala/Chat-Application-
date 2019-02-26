@@ -12611,11 +12611,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\khushbupanwala\\Documents\\Khushbu Panwala\\Promact Slack\\SlackChat_API\\SlackChat_API\\SlackChat_API.csproj",
+      "projectUniqueName": "C:\\Users\\khushbupanwala\\Documents\\Khushbu Panwala\\Promact Slack\\Github\\SlackChat_API\\SlackChat_API\\SlackChat_API.csproj",
       "projectName": "SlackChat_API",
-      "projectPath": "C:\\Users\\khushbupanwala\\Documents\\Khushbu Panwala\\Promact Slack\\SlackChat_API\\SlackChat_API\\SlackChat_API.csproj",
+      "projectPath": "C:\\Users\\khushbupanwala\\Documents\\Khushbu Panwala\\Promact Slack\\Github\\SlackChat_API\\SlackChat_API\\SlackChat_API.csproj",
       "packagesPath": "C:\\Users\\khushbupanwala\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\khushbupanwala\\Documents\\Khushbu Panwala\\Promact Slack\\SlackChat_API\\SlackChat_API\\obj\\",
+      "outputPath": "C:\\Users\\khushbupanwala\\Documents\\Khushbu Panwala\\Promact Slack\\Github\\SlackChat_API\\SlackChat_API\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

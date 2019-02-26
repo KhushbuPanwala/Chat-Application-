@@ -26,7 +26,7 @@ namespace SlackChat_API.TimerFeatures
         {
             _action();
 
-            if ((DateTime.Now - TimerStarted).Seconds > 60)
+            if ((DateTime.Now - TimerStarted).Seconds > 300)
             {
                 _timer.Dispose();
             }

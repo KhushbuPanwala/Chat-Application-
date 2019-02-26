@@ -13,6 +13,7 @@ import { UserService } from '../user/user.service';
 import { Messagedetail } from '../messagedetail/messagedetail';
 import { UsersignalrService } from '../service/usersignalr.service';
 import { MessageSignalRService } from '../service/messgesignalr.service';
+import { EDEADLK } from 'constants';
 // import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
@@ -35,6 +36,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     currentUserId:number=0;    
     recivedUserId:number=0 ;
     messageForm: FormGroup;
+    hide=true;
   // private currentUserSubject: BehaviorSubject<User>;
 
     constructor(
@@ -57,27 +59,21 @@ export class HomeComponent implements OnInit, OnDestroy {
     
     ngOnInit() {         
       //user                 
-      this.signalRService.startConnection();      
+      this.signalRService.startConnection();            
       this.signalRService.addTransferUserDataListener();
-      this.signalRService.addBroadcastUserDataListener();       
-      // this.signalRService.broadcastUserData();
+      this.signalRService.addBroadcastUserDataListener();             
       this.startHttpRequest();
 
-      //message
-      
-      //   this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));  
-      // this.currentUserId=this.currentUserSubject.value.userId;
-      this.msgSignalRService.startConnection();           
-      this.msgSignalRService.addTransferMessageDataListener(this.currentUserId,this.recivedUserId)
-      // this.msgSignalRService.broadcastMessageData();  
+      //message      
+      this.msgSignalRService.startConnection();                 
+      this.msgSignalRService.addTransferNotificationListener();
       this.msgSignalRService.addBroadcastMessageDataListener();  
-      this.startMsgHttpRequest();
- 
+      this.startMsgHttpRequest(); 
+      
       // this.loadAllUsers();
         this.messageForm = this.formBuilder.group({
             message: [''],
-        });   
-        
+        });           
       }
       
     ngOnDestroy() {
@@ -97,17 +93,20 @@ export class HomeComponent implements OnInit, OnDestroy {
         })
     }
      
-     loadData(cUserId, rUserId){             
-        this.recivedUserId = rUserId;
+      loadData(cUserId, rUserId){             
         this.currentUserId = cUserId;
-        this.msgSignalRService.addTransferMessageDataListener(this.currentUserId,this.recivedUserId);
-
+        this.recivedUserId = rUserId;         
+        this.msgSignalRService.addTransferMessageListener(this.currentUserId,this.recivedUserId);
+        
+        console.log("load data called");
         //update messagedetail table set unread to read 
-        let id=this.currentUserId+";"+this.recivedUserId;         
-         this.messagedetailService.updateMessage(id).
-         pipe(first()).subscribe(msgs => {      
-          this.alertService.success('Record updated successfully!!!', true);          
-          });  
+        let id=this.currentUserId+";"+this.recivedUserId;        
+        this.messagedetailService.updateMessage(id).
+            pipe(first()).subscribe(msgs => {      
+              this.alertService.success('Record updated successfully!!!', true); 
+              // this.msgSignalRService.addTransferNotificationListener();              
+              this.hide=false;
+        });  
       }
 
       sendMessageData()
@@ -119,10 +118,13 @@ export class HomeComponent implements OnInit, OnDestroy {
 
         this.messagedetailService.sendMessage(this.sendMessage).pipe(first())
         .subscribe(msgs => {      
-          this.alertService.success('Record send successfully!!!', true);            
-            this.recivedUserId =this.sendMessage.rUserId;
-            this.currentUserId = this.sendMessage.userId;            
-          });  
+          this.alertService.success('Record send successfully!!!', true);          
+          this.currentUserId=this.sendMessage.userId;
+          this.recivedUserId= this.sendMessage.rUserId ;           
+          // this.loadData(this.sendMessage.userId, this.sendMessage.rUserId );            
+          this.msgSignalRService.addTransferMessageListener(this.currentUserId,this.recivedUserId);
+          this.msgSignalRService.addTransferNotificationListener();
+        });            
           this.messageForm = this.formBuilder.group({
             message: [''],
         });         
@@ -140,6 +142,6 @@ export class HomeComponent implements OnInit, OnDestroy {
       logout(userId) {
         this.userService.updateUser(userId).pipe() .subscribe( data => { }); 
         this.authenticationService.logout();  
-        this.router.navigate(['/Login']);
+        this.router.navigate(['/Login']);        
     }
 }

@@ -5,6 +5,7 @@ import * as _moment from 'moment';
 import * as _rollupMoment from 'moment';
 import { currentId } from 'async_hooks';
 import { BrowserAnimationBuilder } from '@angular/platform-browser/animations/src/animation_builder';
+import { MessagedetailService } from '../messagedetail/messagedetail.service';
 
 const moment = _rollupMoment || _moment;
 	export const MY_FORMATS = {
@@ -22,36 +23,78 @@ const moment = _rollupMoment || _moment;
   providedIn: 'root'
 })
 export class MessageSignalRService {
-
   public data: Messagedetail[];
   public msgData: any;
   public recMsgData: any;
+  public allData: any;
   public bradcastedData: Messagedetail[];
   
   private hubConnection: signalR.HubConnection
   uCnt:number=0;
-  rCnt:number=0;
-
-  public startConnection = () => {    
+  rCnt:number=0;  
+  
+  constructor(private msgDetailService:MessagedetailService ){ }
+  
+    public startConnection = () => {    
     this.hubConnection = new signalR.HubConnectionBuilder()                            
                             .withUrl('https://localhost:44302/messagedetails')
                             .build(); 
     this.hubConnection
       .start()
       .then(() => console.log('Message Connection started'))
-      .catch(err => console.log('Error while starting connection: ' + err))
+      .catch(err => console.log('Error while starting connection: ' + err));
   }
- 
-// --------------
-  public addTransferMessageDataListener = (cUserId,rUserId) => {      
-    this.hubConnection.on('transfermessagedata', (data) => {      
-      this.data = data;          
-      this.recMsgData=[];
-       this.msgData =[];                    
-    
-       if  (this.data.length>0 )     
+//  -------------------notification
+  public addTransferNotificationListener = () => {    
+    this.data=[];
+    this.recMsgData=[];
+        this.msgDetailService.getAllMessage().subscribe(
+          msg => {           
+               this.allData=msg;
+                // this.data=msg;
+                this.data = this.allData;
+          }); 
+      
+    this.hubConnection.on('transfermessagedata', (data) => {
+      //call from load data
+        // this.data =  this.allData;
+        // this.data =data;
+      if  (this.data!=undefined && this.data.length>0 )
       { 
-      //show date wise data    
+        const groupedKey = this.data.reduce((prev, cur)=> {
+          if(!prev[cur["userId"]]) {
+              prev[cur["userId"]] = [cur];
+          } else {
+              prev[cur["userId"]].push(cur);
+          }
+          return prev;
+        }, {});
+
+      this.recMsgData= Object.keys(groupedKey).map(key => ({ key, value: groupedKey[key] ,unCount:0 }));        
+
+      // Notification count setting 
+      this.recMsgData.forEach(item => {        
+        item.value.forEach(ele => {            
+          if  (ele.msgStatus==0)           
+              this.uCnt++;                         
+        });         
+          item.unCount=this.uCnt;
+          this.uCnt=0;
+        });
+      }  
+    });
+  } 
+
+// -------------- date wise message
+  public addTransferMessageListener = (cUserId,rUserId) => {     
+    this.data=[];
+    this.hubConnection.on('transfermessagedata', (data) => {      
+        this.data = data;
+       this.msgData =[];
+       
+       if  (this.data.length>0 )     
+        { 
+        //show date wise data    
         this.data.forEach(item => {
           if  (item.userId==cUserId && item.rUserId==rUserId
             ||  item.userId == rUserId &&  item.rUserId == cUserId )
@@ -72,37 +115,11 @@ export class MessageSignalRService {
         return prev;
       }, {});           
       this.msgData= Object.keys(groupedObj).map(key => ({ key, value: groupedObj[key] }));
-
-      // ----------------notification
-      // this.recMsgData = this.data.filter(item => item ==cUserId ||item.rUserId ==cUserId  );
-
-      const groupedKey = this.data.reduce((prev, cur)=> {
-        if(!prev[cur["userId"]]) {
-            prev[cur["userId"]] = [cur];
-        } else {
-            prev[cur["userId"]].push(cur);
-        }
-        return prev;
-      }, {});             
-
-      this.recMsgData= Object.keys(groupedKey).map(key => ({ key, value: groupedKey[key] ,unCount:0 }));        
-
-      // Notification count setting 
-      this.recMsgData.forEach(item => {        
-        item.value.forEach(ele => {            
-          if  (ele.msgStatus==0) 
-          {
-            this.uCnt++;              
-          }            
-        });         
-          item.unCount=this.uCnt;
-          this.uCnt=0;                    
-        });               
-      }  
+      }
     });
   }  
 
-  public broadcastMessageData = () => {
+  public broadcastMessageData = () => {    
     this.hubConnection.invoke('broadcastmessagedata', this.data)
     .catch(err => console.error(err));
   }
