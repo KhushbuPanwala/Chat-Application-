@@ -1,0 +1,37 @@
+body {
+    font-family: Arial;
+    color: white;
+  }
+  .split {
+    height: 100%;
+    width: 40%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+  
+  .left {
+    left: 0;
+    width: 20%;    
+    background-color: #3f0e40;
+  }
+  
+  .right {
+    right: 0;
+    width: 80%;
+    background-color:white;
+  }
+  .fa{
+    color: white !important;
+  }
+  .centered {
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 60%;
+    /* transform: translate(-50%, -50%); */
+    /* text-align: center; */
+  }
+  

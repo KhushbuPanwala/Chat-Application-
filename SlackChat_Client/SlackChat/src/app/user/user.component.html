@@ -1,0 +1,45 @@
+<h2>Register</h2>
+<form [formGroup]="userRegisterForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <label for="userName">User Name</label>
+        <input type="text" formControlName="userName" class="form-control" 
+        [(ngModel)]="user.UserName"
+        [ngClass]="{ 'is-invalid': submitted && f.userName.errors }" />
+        <div *ngIf="submitted && f.userName.errors" class="invalid-feedback">
+            <div *ngIf="f.userName.errors.required">User Name is required</div>
+        </div>
+    </div>
+   
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" formControlName="password" class="form-control"
+        [(ngModel)]="user.Password"
+         [ngClass]="{ 'is-invalid': submitted && f.password.errors }" 
+        oncopy="return false" oncut="return false" onpaste="return false"/>
+        <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+            <div *ngIf="f.password.errors.required">Password is required</div>
+            <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="birthDate" style="width:100%">Birth Date</label>          
+        <input  [matDatepicker]="birthDate"   class="form-control"        
+            formControlName="birthDate"  style="width:95%;display: inline-block"           
+            [ngClass]="{ 'is-invalid': submitted && f.birthDate.errors }"
+            [(ngModel)]="user.Birthdate" (blur)="validateBirthDate()" >
+        <mat-datepicker-toggle matSuffix [for]="birthDate" style="width:5%;display: inline-block" >
+        </mat-datepicker-toggle>
+        <mat-datepicker #birthDate style="width:5%;display: inline-block" ></mat-datepicker>        
+        <div *ngIf="submitted && f.birthDate.errors" class="invalid-feedback">
+            <div *ngIf="f.birthDate.errors.required">Birth Date is required</div>
+        </div>                
+        <div *ngIf="birthError.isError" class="alert alert-danger">{{birthError.errorMessage}}</div>  
+    </div>  
+
+
+    <div class="form-group">
+        <button [disabled]="loading" class="btn btnStyle">Register</button>
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+        <a [routerLink]="['/Login']" class="btn btn-link">Cancel</a>
+    </div>
+</form>

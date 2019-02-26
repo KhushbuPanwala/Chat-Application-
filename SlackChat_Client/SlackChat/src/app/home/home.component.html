@@ -1,0 +1,105 @@
+<!-- Left side panel -->
+<div class="split left">
+    <div *ngIf="currentUser">    
+            &nbsp;   
+          <i [ngClass]="currentUser.userStatus? 'fa fa-circle' : 'fa fa-circle-o'"></i>           
+            <a class="hlkStyle" (click)="showHome()"> &nbsp; {{currentUser.userName}}</a>        
+            &nbsp;       &nbsp;   &nbsp;     
+            <span (click)="logout(currentUser.userId)"  >
+                <i class="fa fa-power-off" style="float:right; color: white; padding-right: 26px;padding-top: 2px;font-size: 22px;"></i>                
+            </span>              
+      </div>
+      <div *ngIf='signalRService.data && signalRService.data.length'>
+        <ul *ngFor="let user of signalRService.data" class="dots" >             
+          <li *ngIf="user.userId!=currentUser.userId" >
+            <i  [ngClass]="user.userStatus? 'fa fa-circle' : 'fa fa-circle-o'">
+              <a class="hlkStyle" (click)="loadData(currentUser.userId, user.userId)">            
+                <span>&nbsp; {{user.userName}}
+                    <div *ngFor="let msg of msgSignalRService.recMsgData">                          
+                         <div  *ngIf="user.userId == msg.key"> 
+                            <!-- <mark *ngIf="msg.unCount>0">{{msg.unCount}}</mark>  -->
+                           </div>
+                      </div>  
+                </span>
+              </a>
+            </i>
+          </li>
+        </ul>  
+      
+    </div>
+  </div>
+<!-- Right side panel -->
+<div class="split right">  
+    <div class="top">
+      <h2 class="h2Style"> Welcome to Slack Chat </h2>     
+        <div *ngFor="let user of signalRService.data">
+          <div *ngIf="user.userId == recivedUserId"> 
+              <span class="spanStyle" >
+              &nbsp; {{user.userName}}
+              &nbsp; | &nbsp;          
+            </span>      
+              <i [ngClass]="user.userStatus? 'fa fa-circle' : 'fa fa-circle-o'"></i>
+              <span class="spanStyle" *ngIf="user.userStatus==1">   
+                &nbsp; active
+              </span>                  
+              <span class="spanStyle" *ngIf="user.userStatus==0">   
+                  &nbsp; away
+              </span>                 
+          </div>             
+        </div>              
+    </div>
+    <hr/>  
+    <div class="middle">      
+      <div *ngIf="recivedUserId==0">
+        <img src="./assets/chatting.jpg" alt="Image" style="width:60%; margin-left: 20%;">
+      </div>
+      <div *ngFor="let msg of msgSignalRService.msgData">    
+        <h3 *ngIf="recivedUserId!=0">
+          <span>
+                  {{msg.key |  date: 'EEEE, MMMM d, y'}}
+                  <mark>{{msgSignalRService.msgData.unreadCount}}</mark>
+          </span>
+        </h3>               
+        <div  *ngFor="let msgDetail of msg.value">          
+                
+          <div class="container">            
+            <img src="./assets/1.jpg" alt="Avatar"  style="width:5%;"  >              
+            <div *ngIf="msgDetail.rUserId != currentUserId">
+              <span class="important-message" *ngIf="msgDetail.rUserId != currentUserId">
+                  {{currentUser.userName}}
+                  {{msgDetail.dateTime |  date:'hh:mm:ss a':'+0530'}}
+              </span>
+            </div>  
+            <div *ngIf="msgDetail.rUserId == currentUserId">
+              <div *ngFor="let user of signalRService.data">
+                <span class="important-message" *ngIf="user.userId == msgDetail.userId">                  
+                  {{user.userName}}
+                  {{msgDetail.dateTime |  date:'hh:mm:ss a':'+0530'}}
+                </span>
+              </div>                
+            </div>           
+            <p>{{msgDetail.message}}</p>                 
+          </div>                
+        </div>
+      </div>   
+    </div>  
+<hr/>  
+    <div class="bottom">
+      <div *ngIf="recivedUserId!=0">        
+      <form [formGroup]="messageForm">   
+        <div class="input-group form-group ">               
+            <input type="text" class="form-control inputStyle"  
+            name="message"  formControlName="message"
+            autocomplete="off" placeholder="message"   
+            (keypress)="onKeyPress($event)">
+            <span class="input-group-btn">
+                <button class="btn btn-default btnStyle" type="button">
+                    <i class="fa fa-plus-circle" 
+                    (click)="sendMessageData()"></i>
+                </button>
+              </span>
+        </div>       
+      </form> 
+    </div>
+  </div>
+  </div>
