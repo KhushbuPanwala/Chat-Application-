@@ -27,8 +27,13 @@ namespace SlackChat_API.Model
         public DateTime Birthdate { get; set; }
 
         [Required]
-        [Display(Name = "Status")]        
+        [Display(Name = "Status")]
         public UserStatusEnum UserStatus { get; set; }
+
+        
+        public string Image { get; set; }
+
+        public string ImageName { get; set; }
 
         public User()
         {

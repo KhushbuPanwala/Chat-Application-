@@ -27,7 +27,13 @@ addUser (user): Observable<any> {
   .pipe(
   catchError(this.handleError<any>('addUser')));
 }
-
+postFile(caption: string, fileToUpload: File) {           
+  const endpoint = 'https://localhost:44302/api/Image';
+  const formData: FormData = new FormData();
+  formData.append('Image', fileToUpload, fileToUpload.name);
+  // formData.append('ImageCaption', caption);          
+  return this.http.post(endpoint, formData);
+}
 deleteUser (id): Observable<any> {          
   return this.http.delete(endpoint+ "/" + id).pipe(  
     map(this.extractData));                    

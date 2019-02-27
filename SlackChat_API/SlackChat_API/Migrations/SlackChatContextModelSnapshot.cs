@@ -51,6 +51,12 @@ namespace SlackChat_API.Migrations
 
                     b.Property<DateTime>("Birthdate");
 
+                    b.Property<string>("Image")
+                        .IsRequired();
+
+                    b.Property<string>("ImageName")
+                        .IsRequired();
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(50);

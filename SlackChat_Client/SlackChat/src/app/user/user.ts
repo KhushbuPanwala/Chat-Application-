@@ -5,4 +5,6 @@ export class User {
     birthdate: string;
     userStaus: number;
     token: string;
+    imageName:string;
+    image: string;
 }

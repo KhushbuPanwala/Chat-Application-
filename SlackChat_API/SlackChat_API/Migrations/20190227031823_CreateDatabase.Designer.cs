@@ -10,7 +10,7 @@ using SlackChat_API.Model;
 namespace SlackChat_API.Migrations
 {
     [DbContext(typeof(SlackChatContext))]
-    [Migration("20190220104138_CreateDatabase")]
+    [Migration("20190227031823_CreateDatabase")]
     partial class CreateDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,6 +52,12 @@ namespace SlackChat_API.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<DateTime>("Birthdate");
+
+                    b.Property<string>("Image")
+                        .IsRequired();
+
+                    b.Property<string>("ImageName")
+                        .IsRequired();
 
                     b.Property<string>("Password")
                         .IsRequired()

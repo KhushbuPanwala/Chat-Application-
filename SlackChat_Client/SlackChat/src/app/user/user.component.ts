@@ -42,13 +42,17 @@ export class UserComponent implements OnInit {
     toDay:string=moment(new Date()).format().substring(0, 10); 
     date = new FormControl(moment());
 
+    //image upload and display
+    fileToUpload: File = null;
+
     @Input() user: 
-  any = { 
+      any = { 
         user_UserId:'',    
         user_UserName:'',    
         user_Password:'',
         user_Birthdate:'',
         user_UserStaus:0,          
+        // user_ImageName:'',          
     };
     birthDate:string;
     birthError:any={isError:false,errorMessage:''};
@@ -81,7 +85,7 @@ export class UserComponent implements OnInit {
     // convenience getter for easy access to form fields
     get f() { return this.userRegisterForm.controls; }
 
-    onSubmit() {
+    onSubmit(Image) {
         this.submitted = true;
 
         // stop here if form is invalid
@@ -92,7 +96,16 @@ export class UserComponent implements OnInit {
         this.loading = true;
         this.user.BirthDate = moment(this.user.Birthdate).format().substring(0, 10);         
         //  this.userService.addUser(this.userRegisterForm.value)
-         this.userService.addUser(this.user)
+
+        
+        if  (this.fileToUpload)
+        {
+           this.user.imageName= this.fileToUpload.name;
+          this.userService.postFile(this.user.imageName,this.fileToUpload).subscribe(
+            data =>{                       
+              // this.user.ImageName=data;             
+                this.user.image="";
+          this.userService.addUser(this.user)          
             .pipe(first())
             .subscribe(
                 data => {                    
@@ -103,10 +116,10 @@ export class UserComponent implements OnInit {
                     this.alertService.error(error);
                     this.loading = false;
                 });
-
-                 //Birthdate validation
-        }        
-
+              });
+            }
+    }
+    
 validateBirthDate(){      
     this.birthDate = moment(this.userRegisterForm.controls['birthDate'].value).format().substring(0, 10); 
     if  (this.toDay==this.birthDate)
@@ -115,5 +128,18 @@ validateBirthDate(){
       this.birthError={isError:true,errorMessage:'Birthdate does not greater than current date'};        
     else     
       this.birthError={isError:false};    
+  }  
+
+  handleFileInput(file: FileList) {
+    this.fileToUpload = file.item(0);         
+    //Show image preview
+    var reader = new FileReader();
+    reader.onload = (event:any) => {
+      // this.imageUrl = event.target.result;      
+      this.user.image = event.target.result;
+    }
+    reader.readAsDataURL(this.fileToUpload);    
+    
+    
   }  
 }

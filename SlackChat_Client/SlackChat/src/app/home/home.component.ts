@@ -103,8 +103,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         this.messagedetailService.updateMessage(id).
             pipe(first()).subscribe(msgs => {      
               this.alertService.success('Record updated successfully!!!', true); 
-              this.msgSignalRService.addTransferNotificationListener(this.currentUserId);              
-        });  
+              this.msgSignalRService.addTransferNotificationListener(this.currentUserId);
+            });  
       }
 
       sendMessageData()
@@ -119,7 +119,7 @@ export class HomeComponent implements OnInit, OnDestroy {
           this.alertService.success('Record send successfully!!!', true);          
           this.currentUserId=this.sendMessage.userId;
           this.recivedUserId= this.sendMessage.rUserId ;           
-           this.loadData(this.sendMessage.userId, this.sendMessage.rUserId );
+            this.loadData(this.sendMessage.userId, this.sendMessage.rUserId );
           // this.msgSignalRService.addTransferMessageListener(this.currentUserId,this.recivedUserId);
           // this.msgSignalRService.addTransferNotificationListener(this.currentUserId);
         });            
@@ -127,7 +127,7 @@ export class HomeComponent implements OnInit, OnDestroy {
             message: [''],
         });         
       }
-      onKeyPress(event: any) {               
+        onKeyPress(event: any) {               
            if  (event.keyCode==13) {
                 this.sendMessageData();
            }

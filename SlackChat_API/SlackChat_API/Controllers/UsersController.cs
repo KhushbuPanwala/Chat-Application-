@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -19,21 +21,28 @@ namespace SlackChat_API.Controllers
 
         private IHubContext<SlackChatHub> _hub;
 
-        public UsersController(IHubContext<SlackChatHub> hub)
+        private IHostingEnvironment _hostingEnvironment;
+
+        public UsersController(IHubContext<SlackChatHub> hub, IHostingEnvironment hostingEnvironment)
         {
             _hub = hub;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         // GET: api/Users
         [HttpGet]
         public ActionResult<IEnumerable<User>> GetUsers()
         {
+            //_context.Users.Where(o => o.Image != "").ToList().ForEach(item => {
+            //    item.Image = "";
+            //});
             var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transferuserdata",
             _context.Users));
+            //_context.Users.ForEachAsync(a => a.Image = "") ;
+            
             return _context.Users;
             //return Ok(new { Message = "Request Completed" });
         }
-
 
         // GET: api/Users/5
         [HttpGet("{id}")]
@@ -88,6 +97,20 @@ namespace SlackChat_API.Controllers
             {
                 return BadRequest(ModelState);
             }
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            string newPath = Path.Combine(webRootPath, "Upload");
+            
+            string fullPath = Path.Combine(newPath, user.ImageName);
+            user.Image = Convert.ToBase64String(System.IO.File.ReadAllBytes(fullPath));
+
+            string ext = Path.GetExtension(fullPath);
+
+            if (ext == ".jpg")
+                user.Image = "data:image/jpeg;base64," + user.Image;
+            else if (ext == ".bmp")
+                user.Image = "data:image/bmp;base64," + user.Image;
+            else if (ext == ".png")
+                user.Image = "data:image/png;base64," + user.Image;
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();

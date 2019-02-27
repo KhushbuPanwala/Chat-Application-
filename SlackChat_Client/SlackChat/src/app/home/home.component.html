@@ -52,30 +52,38 @@
     </div>
     <hr/>  
     <div class="middle">      
-      <div *ngIf="recivedUserId==0">
-        <img src="./assets/chatting.jpg" alt="Image" style="width:60%; margin-left: 20%;">
+      <div *ngIf="recivedUserId==0">           
+          <img src="./assets/chatting.jpg" alt="Image" style="width:60%; margin-left: 20%;">        
       </div>
       <div *ngFor="let msg of msgSignalRService.msgData">    
         <h3 *ngIf="recivedUserId!=0">
           <span>
-                  {{msg.key |  date: 'EEEE, MMMM d, y'}}                  
+                  {{msg.key |  date: 'EEEE, MMMM d, y'}}       
           </span>
         </h3>               
-        <div  *ngFor="let msgDetail of msg.value">          
-                
+        <div  *ngFor="let msgDetail of msg.value">            
           <div class="container">            
-            <img src="./assets/1.jpg" alt="Avatar"  style="width:5%;"  >              
+            <!-- <img src="./assets/1.jpg" alt="Avatar"  style="width:5%;"  >-->           
+            <!-- sender -->
             <div *ngIf="msgDetail.rUserId != currentUserId">
+                <div *ngFor="let user of signalRService.data">
+                    <div *ngIf="user.userId == currentUserId">
+                        <img [src]="user.image"  alt="currentUser.userName"  style="width:5%;">                    
+                    </div>  
+                </div>              
               <span class="important-message" *ngIf="msgDetail.rUserId != currentUserId">
                   {{currentUser.userName}}
                   {{msgDetail.dateTime |  date:'hh:mm:ss a':'+0530'}}
               </span>
             </div>  
-            <div *ngIf="msgDetail.rUserId == currentUserId">
+            <!-- receiver -->
+            <div *ngIf="msgDetail.rUserId == currentUserId">              
               <div *ngFor="let user of signalRService.data">
                 <span class="important-message" *ngIf="user.userId == msgDetail.userId">                  
-                  {{user.userName}}
-                  {{msgDetail.dateTime |  date:'hh:mm:ss a':'+0530'}}
+                      <img [src]="user.image"  alt="user.userName"  style="width:5%;">                    
+                    
+                  {{user.userName}} 
+                  {{msgDetail.dateTime |  date:'hh:mm:ss a':'+0530'}}                  
                 </span>
               </div>                
             </div>           

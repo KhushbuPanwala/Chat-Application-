@@ -17,7 +17,9 @@ namespace SlackChat_API.Migrations
                     UserName = table.Column<string>(maxLength: 50, nullable: false),
                     Password = table.Column<string>(maxLength: 50, nullable: false),
                     Birthdate = table.Column<DateTime>(nullable: false),
-                    UserStatus = table.Column<int>(nullable: false)
+                    UserStatus = table.Column<int>(nullable: false),
+                    Image = table.Column<string>(nullable: false),
+                    ImageName = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
