@@ -13,8 +13,10 @@ import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { AlertComponent } from './shared/alert/alert.component';
-import { MatDatepickerModule } from '@angular/material';
-import { GroupByPipe } from './group-by.pipe';
+import { MatDatepickerModule, MatDialogModule } from '@angular/material';
+import { DialogComponent } from './shared/dialog/dialog.component';
+// import { GroupByPipe } from './group-by.pipe';
+
 
 
 const appRoutes: Routes = [
@@ -32,7 +34,12 @@ const appRoutes: Routes = [
     LoginComponent,
     UserComponent,
     AlertComponent,
-    GroupByPipe,
+    DialogComponent
+    // GroupByPipe,
+    
+  ],
+  entryComponents: [
+    DialogComponent,
     
   ],
   imports: [
@@ -40,10 +47,10 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     HttpClientModule,                
     FormsModule,  
-    RouterModule.forRoot(appRoutes),  
+    RouterModule.forRoot(appRoutes),      
     BrowserAnimationsModule,
     MatDatepickerModule,
-    
+    MatDialogModule, 
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },

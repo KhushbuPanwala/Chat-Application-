@@ -13,6 +13,8 @@ import { UserService } from '../user/user.service';
 import { Messagedetail } from '../messagedetail/messagedetail';
 import { UsersignalrService } from '../service/usersignalr.service';
 import { MessageSignalRService } from '../service/messgesignalr.service';
+import { MatDialog } from '@angular/material';
+import { DialogComponent } from '../shared/dialog/dialog.component';
 // import { BehaviorSubject, Observable } from 'rxjs';
 
 
@@ -22,12 +24,10 @@ import { MessageSignalRService } from '../service/messgesignalr.service';
   styleUrls: ['./home.component.css']
 })
 
-export class HomeComponent implements OnInit, OnDestroy{
-
+export class HomeComponent implements OnInit, OnDestroy{    
     currentUser: User;
     currentUserSubscription: Subscription;
     users: User[];
-    
     messages:any[];    
      message:string="";
      sendMessage:Messagedetail;
@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit, OnDestroy{
     recivedUserId:number=0 ;
     messageForm: FormGroup;    
   // private currentUserSubject: BehaviorSubject<User>;
-
+  
     constructor(
         private router: Router,
         private authenticationService: AuthenticationService,
@@ -49,6 +49,7 @@ export class HomeComponent implements OnInit, OnDestroy{
         private messagedetailService:MessagedetailService,        
         public signalRService: UsersignalrService,    
         public msgSignalRService: MessageSignalRService,
+        private dialog: MatDialog,     
     ) {
      
         this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
@@ -56,9 +57,8 @@ export class HomeComponent implements OnInit, OnDestroy{
             this.currentUserId=this.currentUser.userId;
         });        
     }
-    
-    
-    ngOnInit() {         
+    ngOnInit() {       
+      
       //user                 
       this.signalRService.startConnection();            
       this.signalRService.addTransferUserDataListener();
@@ -141,4 +141,20 @@ export class HomeComponent implements OnInit, OnDestroy{
         this.authenticationService.logout();  
         this.router.navigate(['/Login']);        
     }
+
+
+    
+ openDialog(): void {
+  const dialogRef = this.dialog.open(DialogComponent, {
+      width: '300px' ,      
+      data: {
+        // dataKey: id,
+        // deletionModule:'Employee',
+      }
+    });
+    dialogRef.afterClosed().subscribe(result => {      
+      // this.getEmployees();
+    });
+  }
+
 }

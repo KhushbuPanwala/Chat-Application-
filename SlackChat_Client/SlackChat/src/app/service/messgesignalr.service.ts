@@ -49,8 +49,7 @@ export class MessageSignalRService {
 
 // -------------- date wise message
   public addTransferMessageListener = (cUserId,rUserId) => {     
-    this.data=[];
-     debugger
+    this.data=[];     
     this.hubConnection.on('transfermessagedata', (data) => {      
         this.data = data;
       

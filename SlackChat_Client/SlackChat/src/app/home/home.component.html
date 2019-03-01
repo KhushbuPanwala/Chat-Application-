@@ -28,10 +28,12 @@
               </a>
             </i>
           </li>
+         
         </ul>  
-      
+     
     </div>
   </div>
+  
 <!-- Right side panel -->
 <div class="split right">  
     <div class="top">
@@ -54,7 +56,7 @@
     </div>
     <hr/>  
     <div class="middle"  >
-      <div *ngIf="recivedUserId==0">           
+      <div *ngIf="recivedUserId==0">             
           <img src="./assets/chatting.jpg" alt="Image" style="width:60%; margin-left: 20%;">        
       </div>
       <div *ngFor="let msg of msgSignalRService.msgData">    
@@ -65,7 +67,7 @@
         </h3>               
         <div  *ngFor="let msgDetail of msg.value">            
           <div class="container" *ngIf="recivedUserId!=0">            
-            <img src="./assets/1.jpg" alt="Avatar"  style="width:5%;"  >           
+            <!-- <img src="./assets/1.jpg" alt="Avatar"  style="width:5%;"  >            -->
             <!-- sender -->
             <div *ngIf="msgDetail.rUserId != currentUserId">
                 <div *ngFor="let user of signalRService.data">
@@ -107,9 +109,18 @@
                     <i class="fa fa-plus-circle" 
                     (click)="sendMessageData()"></i>
                 </button>
+                <!-- <button class="btn btn-default btnStyle" type="button">
+                  <i class="fa fa-smile-o"
+                  (click)="openDialog()"></i>
+              </button>               -->
               </span>
         </div>       
       </form> 
     </div>
   </div>
   </div>
+  <script>
+      (() => {
+        new EmojiPicker()
+      })()
+    </script>

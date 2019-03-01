@@ -33,10 +33,10 @@ namespace SlackChat_API.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<User>> GetUsers()
         {
-            _context.Users.Where(o => o.Image != "").ToList().ForEach(item =>
-            {
-                item.Image = "";
-            });
+            //_context.Users.Where(o => o.Image != "").ToList().ForEach(item =>
+            //{
+            //    item.Image = "";
+            //});
             var timerManager = new TimerManager(() => _hub.Clients.All.SendAsync("transferuserdata",
             _context.Users));
             //_context.Users.ForEachAsync(a => a.Image = "") ;

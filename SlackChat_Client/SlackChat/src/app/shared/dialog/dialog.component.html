@@ -1,3 +1,25 @@
-<p>
-  dialog works!
-</p>
+
+<mat-dialog-content class="mat-typography">
+  <h2 mat-dialog-title>Emoji</h2>
+  <div *ngFor="let emoji of emojiData">
+      <i [ngClass]="emoji.value" (click)="selectedEmoji(emoji.value)" ></i>
+  </div>
+  <!-- <i class="em em-some-emoji"></i>
+  <i class="em em---1"></i>
+  <i class="em em--1"></i>
+  <i class="em em-100"></i>
+  <i class="em em-1234"></i>
+  <i class="em em-blond-haired-man"></i>
+  <i class="em em-blond-haired-woman"></i>  
+  <i class="em em-blossom"></i>  
+  <i class="em em-blowfish"></i>  
+  <i class="em em-blue_book"></i>  
+  <i class="em em-blue_car"></i> 
+  <i class="em em-blue_heart"></i>  
+  <i class="em em-blush"></i> -->
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+<button (click)="delete()" class="btn btn-primary">Yes</button>    
+<button mat-dialog-close class="btn btn-primary">No</button>      
+<!-- <a [routerLink]="['/Department']" mat-dialog-close class="btn btn-link">No</a>  -->
+</mat-dialog-actions>
