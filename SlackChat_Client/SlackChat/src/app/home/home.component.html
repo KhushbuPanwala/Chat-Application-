@@ -14,13 +14,15 @@
           <li *ngIf="user.userId!=currentUser.userId" >
             <i  [ngClass]="user.userStatus? 'fa fa-circle' : 'fa fa-circle-o'">
               <a class="hlkStyle" (click)="loadData(currentUser.userId, user.userId)">            
-                <span>&nbsp; {{user.userName}}                                      
-                    <div *ngFor="let msg of msgSignalRService.recMsgData">                          
-                         <div *ngIf="user.userId == msg.key">  
-                           <mark *ngIf="msg.unCount>0">
-                             {{msg.unCount}}                             
-                            </mark> 
-                          </div>
+                <span>&nbsp; {{user.userName}}
+                    <div *ngFor="let msg of msgSignalRService.recMsgData">
+                         <div *ngIf="user.userId == msg.key ">                             
+                            <div *ngFor="let msgDetail of msg.value">                
+                                <mark *ngIf="msg.key!=recivedUserId">                                    
+                                    {{msg.value.length}}
+                                   </mark>
+                            </div>                            
+                        </div>
                     </div>  
                 </span>
               </a>
@@ -51,7 +53,7 @@
         </div>              
     </div>
     <hr/>  
-    <div class="middle">      
+    <div class="middle"  >
       <div *ngIf="recivedUserId==0">           
           <img src="./assets/chatting.jpg" alt="Image" style="width:60%; margin-left: 20%;">        
       </div>
@@ -62,13 +64,13 @@
           </span>
         </h3>               
         <div  *ngFor="let msgDetail of msg.value">            
-          <div class="container">            
-            <!-- <img src="./assets/1.jpg" alt="Avatar"  style="width:5%;"  >-->           
+          <div class="container" *ngIf="recivedUserId!=0">            
+            <img src="./assets/1.jpg" alt="Avatar"  style="width:5%;"  >           
             <!-- sender -->
             <div *ngIf="msgDetail.rUserId != currentUserId">
                 <div *ngFor="let user of signalRService.data">
                     <div *ngIf="user.userId == currentUserId">
-                        <img [src]="user.image"  alt="currentUser.userName"  style="width:5%;">                    
+                        <img [src]="user.image"   style="width:5%;">                    
                     </div>  
                 </div>              
               <span class="important-message" *ngIf="msgDetail.rUserId != currentUserId">
@@ -80,8 +82,7 @@
             <div *ngIf="msgDetail.rUserId == currentUserId">              
               <div *ngFor="let user of signalRService.data">
                 <span class="important-message" *ngIf="user.userId == msgDetail.userId">                  
-                      <img [src]="user.image"  alt="user.userName"  style="width:5%;">                    
-                    
+                      <img [src]="user.image"   style="width:5%;">
                   {{user.userName}} 
                   {{msgDetail.dateTime |  date:'hh:mm:ss a':'+0530'}}                  
                 </span>

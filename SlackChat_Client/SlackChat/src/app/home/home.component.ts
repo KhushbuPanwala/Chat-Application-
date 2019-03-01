@@ -15,13 +15,15 @@ import { UsersignalrService } from '../service/usersignalr.service';
 import { MessageSignalRService } from '../service/messgesignalr.service';
 // import { BehaviorSubject, Observable } from 'rxjs';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
 
-export class HomeComponent implements OnInit, OnDestroy {
+export class HomeComponent implements OnInit, OnDestroy{
+
     currentUser: User;
     currentUserSubscription: Subscription;
     users: User[];
@@ -34,8 +36,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     //coding variable
     currentUserId:number=0;    
     recivedUserId:number=0 ;
-    messageForm: FormGroup;
-    hide=true;
+    messageForm: FormGroup;    
   // private currentUserSubject: BehaviorSubject<User>;
 
     constructor(
@@ -49,6 +50,7 @@ export class HomeComponent implements OnInit, OnDestroy {
         public signalRService: UsersignalrService,    
         public msgSignalRService: MessageSignalRService,
     ) {
+     
         this.currentUserSubscription = this.authenticationService.currentUser.subscribe(user => {
             this.currentUser = user;                               
             this.currentUserId=this.currentUser.userId;
@@ -64,21 +66,22 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.startHttpRequest();
 
       //message      
-      this.msgSignalRService.startConnection();                 
-      this.msgSignalRService.addTransferNotificationListener(this.currentUserId);
+      this.msgSignalRService.startConnection();            
+       this.msgSignalRService.addTransferMessageListener(this.currentUserId,this.recivedUserId);
       this.msgSignalRService.addBroadcastMessageDataListener();  
       this.startMsgHttpRequest(); 
       
       // this.loadAllUsers();
         this.messageForm = this.formBuilder.group({
             message: [''],
-        });           
+        });                   
       }
       
     ngOnDestroy() {
         // unsubscribe to ensure no memory leaks
         this.currentUserSubscription.unsubscribe();
     }
+
     private startMsgHttpRequest = () => {      
       this.http.get('https://localhost:44302/api/messagedetails')
         .subscribe(res => {
@@ -94,18 +97,16 @@ export class HomeComponent implements OnInit, OnDestroy {
      
       loadData(cUserId, rUserId){             
         this.currentUserId = cUserId;
-        this.recivedUserId = rUserId;         
-        this.msgSignalRService.addTransferMessageListener(this.currentUserId,this.recivedUserId);
-        
+        this.recivedUserId = rUserId;                  
+         this.msgSignalRService.addTransferMessageListener(this.currentUserId,this.recivedUserId);
         console.log("load data called");
         //update messagedetail table set unread to read 
         let id=this.currentUserId+";"+this.recivedUserId;        
         this.messagedetailService.updateMessage(id).
             pipe(first()).subscribe(msgs => {      
-              this.alertService.success('Record updated successfully!!!', true); 
-              this.msgSignalRService.addTransferNotificationListener(this.currentUserId);
+              this.alertService.success('Record updated successfully!!!', true);               
             });  
-      }
+        }
 
       sendMessageData()
       {
@@ -118,10 +119,8 @@ export class HomeComponent implements OnInit, OnDestroy {
         .subscribe(msgs => {      
           this.alertService.success('Record send successfully!!!', true);          
           this.currentUserId=this.sendMessage.userId;
-          this.recivedUserId= this.sendMessage.rUserId ;           
-            this.loadData(this.sendMessage.userId, this.sendMessage.rUserId );
-          // this.msgSignalRService.addTransferMessageListener(this.currentUserId,this.recivedUserId);
-          // this.msgSignalRService.addTransferNotificationListener(this.currentUserId);
+          this.recivedUserId= this.sendMessage.rUserId;     
+           this.msgSignalRService.addTransferMessageListener(this.currentUserId,this.recivedUserId);                    
         });            
           this.messageForm = this.formBuilder.group({
             message: [''],

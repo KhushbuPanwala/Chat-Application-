@@ -29,7 +29,7 @@ export class MessageSignalRService {
   public allData: any;
   public bradcastedData: Messagedetail[];
   
-  private hubConnection: signalR.HubConnection
+  private hubConnection: signalR.HubConnection;  
   uCnt:number=0;
   rCnt:number=0;  
   
@@ -39,64 +39,22 @@ export class MessageSignalRService {
     this.hubConnection = new signalR.HubConnectionBuilder()                            
                             .withUrl('https://localhost:44302/messagedetails')
                             .build(); 
+  
     this.hubConnection
       .start()
       .then(() => console.log('Message Connection started'))
       .catch(err => console.log('Error while starting connection: ' + err));
-  }
-
-  // --- after load click
-  public addTransferNotificationListener = (cUserId) => {    
-    this.data=[];
-    this.recMsgData=[];
-    this.allData=[];
-        this.msgDetailService.getAllMessage().subscribe(
-          msg => {          
-            msg.forEach(element => {
-              if  (element.rUserId==cUserId ){
-                this.allData.push(element);    
-              }
-            }); 
-            this.data = this.allData;
-          }); 
       
+    }
 
-    this.hubConnection.on('transfermessagedata', (data) => {
-      //call from load data
-        this.data =  this.allData;
-
-      if  (this.data!=undefined && this.data.length>0 )
-      { 
-        const groupedKey = this.data.reduce((prev, cur)=> {
-          if(!prev[cur["userId"]]) {
-              prev[cur["userId"]] = [cur];
-          } else {
-              prev[cur["userId"]].push(cur);
-          }
-          return prev;
-        }, {});
-
-      this.recMsgData= Object.keys(groupedKey).map(key => ({ key, value: groupedKey[key] ,unCount:0 }));        
-
-      // Notification count setting 
-      this.recMsgData.forEach(item => {        
-        item.value.forEach(ele => {            
-          if  (ele.msgStatus==0)           
-              this.uCnt++;                         
-        });         
-          item.unCount=this.uCnt;
-          this.uCnt=0;
-        });
-      }  
-    });
-  } 
 // -------------- date wise message
   public addTransferMessageListener = (cUserId,rUserId) => {     
     this.data=[];
+     debugger
     this.hubConnection.on('transfermessagedata', (data) => {      
         this.data = data;
-       this.msgData =[];
-       
+      
+      this.msgData =[];       
        if  (this.data.length>0 )     
         { 
         //show date wise data    
@@ -120,10 +78,29 @@ export class MessageSignalRService {
         return prev;
       }, {});           
       this.msgData= Object.keys(groupedObj).map(key => ({ key, value: groupedObj[key] }));
+     
+      //notification
+      this.recMsgData=[];
+      if  (this.data!=undefined){
+        this.data.forEach(item => {
+          if  (item.rUserId==cUserId && item.msgStatus==0){
+            this.recMsgData.push(item);    
+          }            
+        });   
+      }
+      const groupedKey = this.recMsgData.reduce((prev, cur)=> {
+          if(!prev[cur["userId"]]) {
+              prev[cur["userId"]] = [cur];
+          } else {
+              prev[cur["userId"]].push(cur);
+          }
+          return prev;
+        }, {});
+
+        this.recMsgData= Object.keys(groupedKey).map(key => ({ key, value: groupedKey[key]}));
       }
     });
-  }  
-
+}
   public broadcastMessageData = () => {    
     this.hubConnection.invoke('broadcastmessagedata', this.data)
     .catch(err => console.error(err));

@@ -19,7 +19,7 @@ namespace SlackChat_API.Model
         {
             _action = action;
             _autoResetEvent = new AutoResetEvent(false);
-            _timer = new Timer( Execute, _autoResetEvent, 1000, 1000);
+            _timer = new Timer(Execute, _autoResetEvent, 1000, 1000);
             TimerStarted = DateTime.Now;
         }
 

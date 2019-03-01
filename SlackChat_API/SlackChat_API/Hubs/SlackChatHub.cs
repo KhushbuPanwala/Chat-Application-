@@ -9,8 +9,8 @@ namespace SlackChat_API.Hubs
 {
     public class SlackChatHub : Hub
     {
-        public async Task BroadCastUserData(List<User> data) => await Clients.All.SendAsync("broadcastuserdata", data);
+        //public async Task BroadCastUserData(List<User> data) => await Clients.All.SendAsync("broadcastuserdata", data);
 
-        public async Task BroadCastEessageData(List<MessageDetail> data) => await Clients.All.SendAsync("broadcastmessagedata", data);
+        //public async Task BroadCastEessageData(List<MessageDetail> data) => await Clients.All.SendAsync("broadcastmessagedata", data);
     }
 }

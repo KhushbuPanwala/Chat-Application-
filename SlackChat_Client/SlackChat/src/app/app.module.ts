@@ -14,9 +14,7 @@ import { LoginComponent } from './login/login.component';
 import { UserComponent } from './user/user.component';
 import { AlertComponent } from './shared/alert/alert.component';
 import { MatDatepickerModule } from '@angular/material';
-import { groupBy } from 'rxjs/operators';
 import { GroupByPipe } from './group-by.pipe';
-
 
 
 const appRoutes: Routes = [
